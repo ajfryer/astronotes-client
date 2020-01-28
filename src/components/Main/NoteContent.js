@@ -1,16 +1,18 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import NoteCard from 'components/Main/NoteCard';
+import AppContext from 'contexts/AppContext';
 
 const NoteContentContainer = styled.div``;
 
 const NoteContent = props => {
+  const params = useParams();
+  const { notes } = useContext(AppContext);
+  const note = notes.find(note => note.id === params.noteId);
   return (
     <NoteContentContainer>
-      <NoteCard note={props.note} />
-      {props.note.content.split(/\n \r|\n/).map((para, i) => (
-        <p key={i}>{para}</p>
-      ))}
+      <NoteCard note={note} content={note.content} />
     </NoteContentContainer>
   );
 };
