@@ -1,15 +1,12 @@
 // core dependencies: react and styled components
 import React from 'react';
 import styled, { ThemeProvider } from 'styled-components';
-import { Switch, Route, withRouter } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 // custom components
 import Header from 'components/Header/Header';
 import Nav from 'components/Nav/Nav';
-import NoteContent from 'components/Main/NoteContent';
-import NoteList from 'components/Main/NoteList';
-import AddFolder from 'components/Forms/AddFolder';
-import Error404 from 'components/Error404';
-import AddNote from 'components/Forms/AddNote';
+import Main from 'components/Main/Main';
+
 import Loader from 'components/common/Loader';
 // global dynamic styles
 import themes from 'styles/themes';
@@ -105,25 +102,7 @@ class App extends React.Component {
             <Header />
             <Loader loaded={this.state.loaded}>
               <Nav />
-              <Main>
-                <Switch>
-                  <Route path='/note/:noteId'>
-                    <NoteContent />
-                  </Route>
-                  <Route exact path={['/folder/:folderId', '/']}>
-                    <NoteList />
-                  </Route>
-                  <Route path='/addfolder/'>
-                    <AddFolder />
-                  </Route>
-                  <Route path='/addnote/'>
-                    <AddNote />
-                  </Route>
-                  <Route>
-                    <Error404 />
-                  </Route>
-                </Switch>
-              </Main>
+              <Main />
             </Loader>
           </Grid>
         </ThemeProvider>
@@ -150,13 +129,6 @@ const Grid = styled.div`
       'nav nav'
       'content content';
   }
-`;
-
-const Main = styled.main`
-  grid-area: content;
-  background-color: ${props => props.theme.color.background};
-  padding: 15px;
-  overflow: auto;
 `;
 
 export default withRouter(App);
