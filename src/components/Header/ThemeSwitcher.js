@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPalette } from '@fortawesome/free-solid-svg-icons';
+import AppContext from 'contexts/AppContext';
 
 const Form = styled.form`
   label {
@@ -32,6 +33,7 @@ const Select = styled.select`
 `;
 
 const ThemeSwitcher = props => {
+  const value = useContext(AppContext);
   /*
   const renderItem = (destination, index) => {
     return (
@@ -64,7 +66,7 @@ const ThemeSwitcher = props => {
         <ThemeSwitcherIcon icon={faPalette} />
         Theme:
       </label>
-      <Select value={props.theme} onChange={props.switchTheme}>
+      <Select value={value.theme} onChange={value.switchTheme}>
         <option value='moon'>Moon</option>
         <option value='mars'>Mars</option>
         <option value='asteroid'>Asteroid</option>

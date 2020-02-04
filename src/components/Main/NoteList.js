@@ -24,7 +24,7 @@ const Title = styled.h2`
   }
 `;
 
-const AddNoteButton = styled.div`
+const AddNoteLink = styled(Link)`
   height: 100%;
   width: 100%;
   background-color: transparent;
@@ -83,13 +83,13 @@ const NoteList = props => {
           </li>
         ))}
         <li>
-          <AddNoteButton>
+          <AddNoteLink to={`/addnote`}>
             <AddNoteIcon>
               <PlusIcon icon={faPlus} />
               <NoteIcon icon={faStickyNote} />
             </AddNoteIcon>
             Add New Note
-          </AddNoteButton>
+          </AddNoteLink>
         </li>
       </NoteListContainer>
     </Container>

@@ -1,9 +1,12 @@
+// core dependencies
 import React from 'react';
 import ReactDOM from 'react-dom';
-// configured for Absolute Imports. See jsconfig.json
-import App from 'components/App/App';
 import { BrowserRouter } from 'react-router-dom';
-// base css
+
+// custom components
+import App from 'components/App/App';
+
+// global static styling
 import 'normalize.css';
 import 'styles/fontLoader.css';
 

@@ -1,10 +1,17 @@
 import React from 'react';
 import AppContext from 'contexts/AppContext';
+import styled from 'styled-components';
+import ValidationError from 'components/Forms/ValidationError';
 
-const AddFolderForm = styled.form``;
+const AddFolderForm = styled.form`
+  button {
+    display: block;
+  }
+`;
 
 class AddFolder extends React.Component {
-  static contextText = AppContext;
+  static contextType = AppContext;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -16,29 +23,36 @@ class AddFolder extends React.Component {
   }
 
   updateName(name) {
-    this.setState({ folderame: { value: name, touched: true } });
+    this.setState({ folderName: { value: name, touched: true } });
   }
 
-  handleSubmit(event) {
+  handleSubmit = event => {
     event.preventDefault();
-    const { name } = this.state;
-  }
+    event.stopPropagation();
+    const name = this.state.folderName.value;
+    console.log(name);
+    let value = this.context;
+    console.log(value);
+    console.log(this.value);
+    const { addFolder } = this.context;
+    addFolder(name);
+  };
 
   validateName() {
     const name = this.state.folderName.value;
-    spacelessName = name.replace(/\s/g, '');
+    console.log(name);
+    const spacelessName = name.replace(/\s/g, '');
     if (spacelessName.length === 0) {
       return 'The name must have more than 1 non-space character';
     }
   }
 
   render() {
+    this.value = this.context;
     return (
-      <AddFolderForm>
+      <AddFolderForm onSubmit={e => this.handleSubmit(e)}>
         <h2>Add A New Folder</h2>
-        {this.state.folderName && (
-          <ValidationError message={this.validateName()}></ValidationError>
-        )}
+
         <label htmlFor='folderName'>Enter A Name For The New Folder:</label>
         <input
           type='text'
@@ -47,14 +61,19 @@ class AddFolder extends React.Component {
           required
           onChange={e => this.updateName(e.target.value)}
         />
+        {this.state.folderName.touched && (
+          <ValidationError message={this.validateName()}></ValidationError>
+        )}
         <button
           type='submit'
           className='registration__button'
           disabled={this.validateName()}
         >
-          Add New Folder
+          Submit
         </button>
       </AddFolderForm>
     );
   }
 }
+
+export default AddFolder;

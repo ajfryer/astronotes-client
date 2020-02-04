@@ -1,22 +1,139 @@
+// core dependencies: react and styled components
 import React from 'react';
-//TODO: Investigate styld components
 import styled, { ThemeProvider } from 'styled-components';
-import { Switch, Route, Link } from 'react-router-dom';
-import AppHeader from 'components/Header/AppHeader';
-import FolderNav from 'components/Nav/FolderNav';
-import NoteNav from 'components/Nav/NoteNav';
+import { Switch, Route, withRouter } from 'react-router-dom';
+// custom components
+import Header from 'components/Header/Header';
+import Nav from 'components/Nav/Nav';
 import NoteContent from 'components/Main/NoteContent';
 import NoteList from 'components/Main/NoteList';
+import AddFolder from 'components/Forms/AddFolder';
 import Error404 from 'components/Error404';
-import dummyStore from 'dummystore';
+import AddNote from 'components/Forms/AddNote';
+import Loader from 'components/common/Loader';
+// global dynamic styles
 import themes from 'styles/themes';
 import GlobalStyles from 'styles/GlobalStyles';
+// contexts
 import AppContext from 'contexts/AppContext';
+// server api
+import jsonServerApi from 'api/jsonServerApi';
 
-import config from 'config';
+/*
+ * App Component
+ * =============
+ * - lowest common ancestor component
+ * - maintains state for most of the remaining components
+ * - handles callback functions for api interactivity
+ * - sets global context value
+ *
+ */
+class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      notes: [],
+      folders: [],
+      loaded: false,
+      theme: 'moon',
+      error: false
+    };
+  }
+
+  async componentDidMount() {
+    try {
+      const { notes, folders } = await jsonServerApi.getAll();
+      this.setState({ notes, folders, loaded: true }); // success
+    } catch (error) {
+      console.log(error); // failure
+    }
+  }
+
+  addNote = async note => {
+    try {
+      note = await jsonServerApi.addNote(note);
+      this.setState(prevState => ({
+        notes: [...prevState.notes, note]
+      }));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  addFolder = async folderName => {
+    try {
+      const folder = await jsonServerApi.addFolder(folderName);
+      this.setState(prevState => ({
+        folders: [...prevState.folders, folder]
+      }));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  deleteNote = async noteId => {
+    try {
+      await jsonServerApi.deleteNote(noteId);
+      this.setState(prevState => ({
+        notes: prevState.notes.filter(note => note.id !== noteId)
+      }));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  switchTheme = event => {
+    this.setState({ theme: event.target.value });
+  };
+
+  render() {
+    return (
+      <AppContext.Provider
+        value={{
+          theme: this.state.theme,
+          switchTheme: this.switchTheme,
+          notes: this.state.notes,
+          folders: this.state.folders,
+          addNote: this.addNote,
+          deleteNote: this.deleteNote,
+          addFolder: this.addFolder
+        }}
+      >
+        <ThemeProvider theme={themes[this.state.theme]}>
+          <GlobalStyles />
+          <Grid>
+            <Header />
+            <Loader loaded={this.state.loaded}>
+              <Nav />
+              <Main>
+                <Switch>
+                  <Route path='/note/:noteId'>
+                    <NoteContent />
+                  </Route>
+                  <Route exact path={['/folder/:folderId', '/']}>
+                    <NoteList />
+                  </Route>
+                  <Route path='/addfolder/'>
+                    <AddFolder />
+                  </Route>
+                  <Route path='/addnote/'>
+                    <AddNote />
+                  </Route>
+                  <Route>
+                    <Error404 />
+                  </Route>
+                </Switch>
+              </Main>
+            </Loader>
+          </Grid>
+        </ThemeProvider>
+      </AppContext.Provider>
+    );
+  }
+}
 
 // app container styles
-const AppGrid = styled.div`
+const Grid = styled.div`
   display: grid;
   grid-template-areas:
     'header header'
@@ -35,148 +152,11 @@ const AppGrid = styled.div`
   }
 `;
 
-const HeaderArea = styled.header`
-  grid-area: header;
-  padding: 0 15px;
-  background-color: ${props => props.theme.color.foreground};
-  color: ${props => props.theme.color.background};
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
-  z-index: 1030;
-`;
-
-const NavArea = styled.nav`
-  grid-area: nav;
-  background-color: ${props => props.theme.color.background};
-  padding: 15px;
-  word-wrap: break-word;
-`;
-
-const MainArea = styled.main`
+const Main = styled.main`
   grid-area: content;
   background-color: ${props => props.theme.color.background};
   padding: 15px;
   overflow: auto;
 `;
 
-export default class App extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      notes: [],
-      folders: [],
-      theme: 'moon'
-    };
-  }
-
-  componentDidMount() {
-    //TODO: load data from api call
-    this.setState(dummyStore);
-    // fetch data and returns {notes: [], folders: []}
-    Promise.all([
-      fetch(`${config.API_ENDPOINT}/notes`),
-      fetch(`${config.API_ENDPOINT}/folders`)
-    ])
-      .then(([notesResponse, foldersResponse]) => {
-        if (!notesResponse.ok) return Promise.reject(notesResponse.statusText);
-        if (!foldersResponse.ok)
-          return Promise.reject(foldersResponse.statusText);
-        return Promise.all([notesResponse.json(), foldersResponse.json()]);
-      })
-      .then(([notes, folders]) => {
-        this.setState({ notes, folders });
-      })
-      .catch(error => {
-        console.log(error);
-      });
-  }
-
-  switchTheme = event => {
-    this.setState({ theme: event.target.value });
-  };
-
-  addNote = () => {};
-  addFolder = () => {};
-
-  deleteNote = noteId => {
-    const options = {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    };
-    fetch(`${config.API_ENDPOINT}/notes/${noteId}`, options)
-      .then(response => {
-        if (!response.ok) {
-          return Promise.reject(response.statusText);
-        }
-        return response.json();
-      })
-      .then(() => {
-        this.setState({
-          notes: this.state.notes.filter(note => note.id !== noteId)
-        });
-      })
-      .catch(error => {
-        console.log(error);
-      });
-  };
-
-  render() {
-    //TODO: set the theme to light or dark depending on state
-    return (
-      <AppContext.Provider
-        value={{
-          notes: this.state.notes,
-          folders: this.state.folders,
-          addNote: this.addNote,
-          deleteNote: this.deleteNote,
-          addFolder: this.addFolder
-        }}
-      >
-        <ThemeProvider theme={themes[this.state.theme]}>
-          <GlobalStyles />
-          <AppGrid>
-            <HeaderArea>
-              <AppHeader
-                switchTheme={this.switchTheme}
-                theme={this.state.theme}
-              />
-            </HeaderArea>
-            <NavArea>
-              <Switch>
-                <Route path='/note/:noteId'>
-                  <NoteNav />
-                </Route>
-                <Route path={['/folder/:folderId', '/']}>
-                  <FolderNav />
-                </Route>
-                <Route>
-                  <Error404 />
-                </Route>
-              </Switch>
-            </NavArea>
-            <MainArea>
-              <Switch>
-                <Route path='/note/:noteId'>
-                  <NoteContent />
-                </Route>
-                <Route path='/folder/:folderId'>
-                  <NoteList />
-                </Route>
-                <Route path='/' exact>
-                  <NoteList />
-                </Route>
-                <Route>
-                  <Error404 />
-                </Route>
-              </Switch>
-            </MainArea>
-          </AppGrid>
-        </ThemeProvider>
-      </AppContext.Provider>
-    );
-  }
-}
+export default withRouter(App);
