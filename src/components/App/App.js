@@ -1,16 +1,16 @@
-// core dependencies: react and styled components
+// core dependency
 import React from 'react';
-import styled from 'styled-components';
 // custom components
 import Theme from 'components/Common/Theme';
+import Page from 'components/Page/Page';
 import Header from 'components/Header/Header';
 import Nav from 'components/Nav/Nav';
 import Main from 'components/Main/Main';
 import Loader from 'components/Common/Loader';
-// react contexts
-import AppContext from 'contexts/AppContext';
-// json server api
-import jsonServer from 'apis/jsonServer';
+// react context
+import Context from 'context/Context.js';
+// server api
+import jsonServer from 'client/jsonServerAPI';
 
 /*
  * App Component
@@ -94,40 +94,19 @@ class App extends React.Component {
       addFolder: this.addFolder
     };
     return (
-      <AppContext.Provider value={value}>
+      <Context.Provider value={value}>
         <Theme>
-          <Grid>
+          <Page>
             <Header />
             <Loader loaded={this.state.loaded}>
               <Nav />
               <Main />
             </Loader>
-          </Grid>
+          </Page>
         </Theme>
-      </AppContext.Provider>
+      </Context.Provider>
     );
   }
 }
-
-// custom styled components
-
-const Grid = styled.div`
-  display: grid;
-  grid-template-areas:
-    'header header'
-    'nav content';
-  grid-template-columns: minmax(100px, 290px) 1fr;
-  grid-template-rows: 80px 1fr;
-  grid-gap: 0rem;
-  row-gap: 0rem;
-  height: 100vh;
-
-  @media only screen and (max-width: 600px) {
-    grid-template-areas:
-      'header header'
-      'nav nav'
-      'content content';
-  }
-`;
 
 export default App;

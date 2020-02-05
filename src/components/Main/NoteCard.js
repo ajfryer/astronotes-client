@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStickyNote } from '@fortawesome/free-solid-svg-icons';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import Button from 'components/Common/Button';
-import AppContext from 'contexts/AppContext';
+import Context from 'context/Context';
 import PropTypes from 'prop-types';
 
 const TitleIcon = styled(FontAwesomeIcon)`
@@ -93,7 +93,7 @@ const DeleteButton = styled(Button)`
 const NoteCard = props => {
   const history = useHistory();
   const params = useParams();
-  const { deleteNote } = useContext(AppContext);
+  const { deleteNote } = useContext(Context);
   //handle the button click
   const handleDeleteClick = (event, noteId) => {
     event.preventDefault();

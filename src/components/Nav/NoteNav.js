@@ -1,12 +1,12 @@
 import React, { useContext } from 'react';
 // used a hook instead of passing routeprops
 import { useHistory, useParams } from 'react-router-dom';
-import AppContext from 'contexts/AppContext';
+import Context from 'context/Context';
 
 const NoteNav = props => {
   const history = useHistory();
   const params = useParams();
-  const { notes, folders } = useContext(AppContext);
+  const { notes, folders } = useContext(Context);
   const note = notes.find(note => note.id === params.noteId);
   const folder = folders.find(folder => folder.id === note.folderId);
   return (

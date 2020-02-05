@@ -1,6 +1,6 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-import AppContext from 'contexts/AppContext';
+import Context from 'context/Context';
 import styled from 'styled-components';
 //import ValidationError from 'components/Forms/ValidationError';
 
@@ -71,7 +71,7 @@ const AddNoteForm = styled.form`
 `;
 
 class AddNote extends React.Component {
-  static contextType = AppContext;
+  static contextType = Context;
 
   constructor(props, context) {
     super(props, context);

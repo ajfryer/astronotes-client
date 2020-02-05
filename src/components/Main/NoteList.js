@@ -4,7 +4,7 @@ import { Link, useParams } from 'react-router-dom';
 import NoteCard from 'components/Main/NoteCard';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStickyNote, faPlus } from '@fortawesome/free-solid-svg-icons';
-import AppContext from 'contexts/AppContext';
+import Context from 'context/Context';
 
 const AddNoteIcon = styled.div``;
 
@@ -80,7 +80,7 @@ const Container = styled.div`
 
 const NoteList = props => {
   const params = useParams();
-  const { notes } = useContext(AppContext);
+  const { notes } = useContext(Context);
   let renderNotes = notes;
   if (params.folderId)
     renderNotes = notes.filter(note => note.folderId === params.folderId);

@@ -8,7 +8,7 @@ import {
   faFolderPlus,
   faLevelUpAlt
 } from '@fortawesome/free-solid-svg-icons';
-import AppContext from 'contexts/AppContext';
+import Context from 'context/Context';
 
 const Title = styled.h2`
   margin: auto 0;
@@ -77,7 +77,7 @@ const AddFolderLink = styled(NavLink)`
 
 const FolderNav = props => {
   const params = useParams();
-  const { folders } = useContext(AppContext);
+  const { folders } = useContext(Context);
 
   const renderFolderLink = folder => {
     return (

@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import AppContext from 'contexts/AppContext';
+import Context from 'context/Context';
 import { ThemeProvider, createGlobalStyle } from 'styled-components';
 
 const baseTheme = {
@@ -194,7 +194,7 @@ h1 {
 `;
 
 const Theme = props => {
-  const value = useContext(AppContext);
+  const value = useContext(Context);
   const theme = value.theme;
 
   return (

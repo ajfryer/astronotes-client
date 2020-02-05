@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPalette } from '@fortawesome/free-solid-svg-icons';
-import AppContext from 'contexts/AppContext';
+import Context from 'context/Context';
 
 /*
  * ThemeSwitcher Component
@@ -11,7 +11,7 @@ import AppContext from 'contexts/AppContext';
  *
  */
 const ThemeSwitcher = props => {
-  const value = useContext(AppContext);
+  const value = useContext(Context);
   return (
     <Form>
       <label>

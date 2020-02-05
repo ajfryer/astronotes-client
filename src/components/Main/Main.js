@@ -51,7 +51,7 @@ const Container = styled.main`
   overflow: auto;
 
   @media only screen and (max-width: 600px) {
-    overflow: visible;
+    overflow: auto;
   }
 `;
 
