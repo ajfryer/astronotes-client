@@ -1,6 +1,14 @@
 # Noteful
 
-React note app for Thinkful. Connects to [noteful-json-server](https://github.com/tomatau/noteful-json-server).
+React Note Taking app. Connects to [noteful-json-server](https://github.com/tomatau/noteful-json-server).
+
+## Architecture
+
+- 4C's folder structure:
+  - client: api functions
+  - components: view classes and functions
+  - context: shared data objects
+  - config: initialize parameters
 
 ## Built With
 
