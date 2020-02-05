@@ -1,6 +1,6 @@
 # Noteful
 
-React Note Taking app. Connects to [noteful-json-server](https://github.com/tomatau/noteful-json-server).
+React Note Taking client app. Connects to [noteful-json-server](https://github.com/tomatau/noteful-json-server).
 
 ## Architecture
 
