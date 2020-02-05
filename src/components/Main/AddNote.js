@@ -2,7 +2,24 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import Context from 'context/Context';
 import styled from 'styled-components';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faStickyNote } from '@fortawesome/free-solid-svg-icons';
 //import ValidationError from 'components/Forms/ValidationError';
+
+const Title = styled.h2`
+  margin: auto 0;
+  text-align: left;
+  svg {
+    margin-right: 0.5rem;
+  }
+`;
+
+const Header = styled.header`
+  display: flex;
+  width: 100%;
+  margin: 0.5rem 0 2rem 0;
+  justify-content: center;
+`;
 
 const AddNoteForm = styled.form`
   display: flex;
@@ -135,47 +152,55 @@ class AddNote extends React.Component {
   render() {
     const { folders } = this.context;
     return (
-      <AddNoteForm onSubmit={e => this.handleSubmit(e)}>
-        <fieldset>
-          <label htmlFor='name'>Name New Note:</label>
-          <input
-            type='text'
-            name='name'
-            id='name'
-            required
-            onChange={e => this.handleInputChange(e)}
-          />
-          <label htmlFor='folderName'>Select A Folder:</label>
-          <select
-            value={this.state.folderName.value}
-            onChange={e => this.handleInputChange(e)}
-            name='folderName'
-            id='folderName'
-          >
-            {folders.map(folder => (
-              <option value={folder.name} key={folder.id}>
-                {folder.name}
-              </option>
-            ))}
-          </select>
-          <button
-            type='submit'
-            disabled={this.validateName() || this.validateContent()}
-          >
-            Submit
-          </button>
-        </fieldset>
-        <fieldset>
-          <label htmlFor='content'>Add Note Content:</label>
-          <textarea
-            name='content'
-            id='content'
-            value={this.state.content.value}
-            onChange={e => this.handleInputChange(e)}
-            required
-          />
-        </fieldset>
-      </AddNoteForm>
+      <>
+        <Header>
+          <Title>
+            <FontAwesomeIcon icon={faStickyNote} />
+            Add A New Note
+          </Title>
+        </Header>
+        <AddNoteForm onSubmit={e => this.handleSubmit(e)}>
+          <fieldset>
+            <label htmlFor='name'>Name New Note:</label>
+            <input
+              type='text'
+              name='name'
+              id='name'
+              required
+              onChange={e => this.handleInputChange(e)}
+            />
+            <label htmlFor='folderName'>Select A Folder:</label>
+            <select
+              value={this.state.folderName.value}
+              onChange={e => this.handleInputChange(e)}
+              name='folderName'
+              id='folderName'
+            >
+              {folders.map(folder => (
+                <option value={folder.name} key={folder.id}>
+                  {folder.name}
+                </option>
+              ))}
+            </select>
+            <button
+              type='submit'
+              disabled={this.validateName() || this.validateContent()}
+            >
+              Submit
+            </button>
+          </fieldset>
+          <fieldset>
+            <label htmlFor='content'>Add Note Content:</label>
+            <textarea
+              name='content'
+              id='content'
+              value={this.state.content.value}
+              onChange={e => this.handleInputChange(e)}
+              required
+            />
+          </fieldset>
+        </AddNoteForm>
+      </>
     );
   }
 }
