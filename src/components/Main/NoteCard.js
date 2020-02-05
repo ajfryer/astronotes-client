@@ -5,8 +5,9 @@ import * as moment from 'moment';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStickyNote } from '@fortawesome/free-solid-svg-icons';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
-import Button from 'components/common/Button';
+import Button from 'components/Common/Button';
 import AppContext from 'contexts/AppContext';
+import PropTypes from 'prop-types';
 
 const TitleIcon = styled(FontAwesomeIcon)`
   margin-right: 0.5rem;
@@ -126,6 +127,16 @@ const NoteCard = props => {
       </DeleteButton>
     </Card>
   );
+};
+
+NoteCard.propTypes = {
+  note: PropTypes.shape({
+    content: PropTypes.string,
+    folderId: PropTypes.string,
+    id: PropTypes.string,
+    modified: PropTypes.string,
+    name: PropTypes.string
+  })
 };
 
 export default NoteCard;

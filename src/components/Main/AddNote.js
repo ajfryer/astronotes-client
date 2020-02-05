@@ -1,32 +1,72 @@
 import React from 'react';
+import { withRouter } from 'react-router-dom';
 import AppContext from 'contexts/AppContext';
 import styled from 'styled-components';
 //import ValidationError from 'components/Forms/ValidationError';
 
 const AddNoteForm = styled.form`
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   margin: 0 auto;
-  width: 85%;
+  width: 100%;
+  text-align: center;
+  color: ${props => props.theme.color.foreground};
 
   label,
   select,
-  input {
-    width: 290px;
+  input,
+  button {
+    width: 260px;
+    align-self: center;
+    margin: 1rem auto;
+  }
+
+  input,
+  button,
+  select {
+    height: 3rem;
   }
 
   textarea {
-    height: 250px;
+    width: 100%;
+    height: auto;
+    min-height: 100%;
   }
 
   label {
-    margin: 1rem 0 1rem 0;
+  }
+
+  fieldset {
+    border: none;
+    display: flex;
+    flex-direction: row;
+    text-align: center;
+    width: 100%;
   }
 
   button {
-    width: 100px;
-    align-self: flex-end;
-    margin-top: 1rem;
+    color: ${props => props.theme.color.background};
+    background-color: ${props => props.theme.color.accent1};
+    border-color: ${props => props.theme.color.accent2};
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    border-width: 1px;
+    background-image: linear-gradient(
+      to bottom,
+      #fff,
+      ${props => props.theme.color.accent1}
+    );
+
+    &:disabled {
+      border: 1px solid #999999;
+      background-color: #cccccc;
+      color: #666666;
+      background-image: none;
+    }
+  }
+
+  @media only screen and (max-width: 1024px) {
+    flex-direction: column;
   }
 `;
 
@@ -65,6 +105,7 @@ class AddNote extends React.Component {
     const modified = new Date();
     const { addNote } = this.context;
     addNote({ name, folderId, content, modified });
+    this.props.history.push('/');
   };
 
   handleInputChange = event => {
@@ -117,24 +158,26 @@ class AddNote extends React.Component {
               </option>
             ))}
           </select>
+          <button
+            type='submit'
+            disabled={this.validateName() || this.validateContent()}
+          >
+            Submit
+          </button>
         </fieldset>
-        <label htmlFor='content'>Add Note Content:</label>
-        <textarea
-          name='content'
-          id='content'
-          value={this.state.content.value}
-          onChange={e => this.handleInputChange(e)}
-          required
-        />
-        <button
-          type='submit'
-          disabled={this.validateName() || this.validateContent()}
-        >
-          Submit
-        </button>
+        <fieldset>
+          <label htmlFor='content'>Add Note Content:</label>
+          <textarea
+            name='content'
+            id='content'
+            value={this.state.content.value}
+            onChange={e => this.handleInputChange(e)}
+            required
+          />
+        </fieldset>
       </AddNoteForm>
     );
   }
 }
 
-export default AddNote;
+export default withRouter(AddNote);

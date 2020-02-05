@@ -1,19 +1,17 @@
 // core dependencies: react and styled components
 import React from 'react';
 import styled, { ThemeProvider } from 'styled-components';
-import { withRouter } from 'react-router-dom';
 // custom components
 import Header from 'components/Header/Header';
 import Nav from 'components/Nav/Nav';
 import Main from 'components/Main/Main';
-
-import Loader from 'components/common/Loader';
+import Loader from 'components/Common/Loader';
 // global dynamic styles
 import themes from 'styles/themes';
 import GlobalStyles from 'styles/GlobalStyles';
-// contexts
+// react contexts
 import AppContext from 'contexts/AppContext';
-// server api
+// json server api
 import jsonServerApi from 'api/jsonServerApi';
 
 /*
@@ -47,6 +45,7 @@ class App extends React.Component {
   }
 
   addNote = async note => {
+    // try/catch to add note to server and state
     try {
       note = await jsonServerApi.addNote(note);
       this.setState(prevState => ({
@@ -58,6 +57,7 @@ class App extends React.Component {
   };
 
   addFolder = async folderName => {
+    // try/catch to add folder to server and state
     try {
       const folder = await jsonServerApi.addFolder(folderName);
       this.setState(prevState => ({
@@ -69,6 +69,7 @@ class App extends React.Component {
   };
 
   deleteNote = async noteId => {
+    // try/catch to delete note from server and set
     try {
       await jsonServerApi.deleteNote(noteId);
       this.setState(prevState => ({
@@ -80,6 +81,7 @@ class App extends React.Component {
   };
 
   switchTheme = event => {
+    // sets theme in state
     this.setState({ theme: event.target.value });
   };
 
@@ -111,7 +113,8 @@ class App extends React.Component {
   }
 }
 
-// app container styles
+// custom styled components
+
 const Grid = styled.div`
   display: grid;
   grid-template-areas:
@@ -131,4 +134,4 @@ const Grid = styled.div`
   }
 `;
 
-export default withRouter(App);
+export default App;

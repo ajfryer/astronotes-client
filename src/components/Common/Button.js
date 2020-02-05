@@ -1,12 +1,5 @@
 import styled from 'styled-components';
 
-/*
-size
-
-
-
-*/
-
 const Button = styled.button`
   width: auto;
 

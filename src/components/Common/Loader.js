@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 /*
  * Loader Component
@@ -7,6 +8,12 @@ import React from 'react';
  * - helps us avoid errors that arise when rendering components before they have data!
  *
  */
-export default function Loader(props) {
+const Loader = props => {
   return props.loaded ? <>{props.children}</> : <div>it's loading!</div>;
-}
+};
+
+Loader.propTypes = {
+  loaded: PropTypes.bool
+};
+
+export default Loader;

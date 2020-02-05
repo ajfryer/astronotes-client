@@ -6,37 +6,53 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStickyNote, faPlus } from '@fortawesome/free-solid-svg-icons';
 import AppContext from 'contexts/AppContext';
 
-const PlusIcon = styled(FontAwesomeIcon)`
-  margin-right: 0.5rem;
-  font-size: 75%;
-  vertical-align: 0%;
-`;
-
-const NoteIcon = styled(FontAwesomeIcon)``;
-
-const AddNoteIcon = styled.div`
-  margin-bottom: 0.5rem;
-`;
+const AddNoteIcon = styled.div``;
 
 const Title = styled.h2`
+  margin: auto 0;
+  text-align: left;
   svg {
     margin-right: 0.5rem;
   }
 `;
 
-const AddNoteLink = styled(Link)`
-  height: 100%;
-  width: 100%;
-  background-color: transparent;
-  border: 0.25rem dashed ${props => props.theme.color.foreground};
-  color: ${props => props.theme.color.foreground};
-
-  border-radius: 0.25rem;
+const Header = styled.header`
   display: flex;
-  flex-direction: column;
+  width: 100%;
+  margin: 0.5rem 0;
+  justify-content: center;
+`;
+
+const AddNoteLink = styled(Link)`
+  text-align: center;
+  display: flex;
+  padding: 0rem 0rem;
+  font-weight: normal;
+  text-decoration: none;
+  height: auto;
+  max-width: 125px;
+  margin-left: 1rem;
+  display: flex;
   justify-content: center;
   align-items: center;
-  text-align: center;
+
+  color: ${props => props.theme.color.background};
+  background-color: ${props => props.theme.color.accent1};
+  border-color: ${props => props.theme.color.accent2};
+  padding: 0.25rem 0.5rem;
+  background-image: linear-gradient(
+    to bottom,
+    #fff,
+    ${props => props.theme.color.accent1}
+  );
+
+  svg {
+    margin-right: 0.5rem;
+  }
+
+  &:hover {
+    text-decoration: none;
+  }
 `;
 
 const NoteListContainer = styled.ul`
@@ -70,10 +86,25 @@ const NoteList = props => {
     renderNotes = notes.filter(note => note.folderId === params.folderId);
   return (
     <Container>
-      <Title>
-        <FontAwesomeIcon icon={faStickyNote} />
-        Notes
-      </Title>
+      <Header>
+        <Title>
+          <FontAwesomeIcon icon={faStickyNote} />
+          Notes
+        </Title>
+        <AddNoteLink to={`/addnote`}>
+          <AddNoteIcon>
+            <span className='fa-layers fa-fw'>
+              <FontAwesomeIcon icon={faStickyNote} />
+              <FontAwesomeIcon
+                icon={faPlus}
+                className='fa-inverse'
+                style={{ fontSize: '50%' }}
+              />
+            </span>
+          </AddNoteIcon>
+          Add Note
+        </AddNoteLink>
+      </Header>
       <NoteListContainer>
         {renderNotes.map(note => (
           <li key={note.id}>
@@ -82,15 +113,6 @@ const NoteList = props => {
             </Link>
           </li>
         ))}
-        <li>
-          <AddNoteLink to={`/addnote`}>
-            <AddNoteIcon>
-              <PlusIcon icon={faPlus} />
-              <NoteIcon icon={faStickyNote} />
-            </AddNoteIcon>
-            Add New Note
-          </AddNoteLink>
-        </li>
       </NoteListContainer>
     </Container>
   );

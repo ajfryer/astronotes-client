@@ -4,9 +4,49 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPalette } from '@fortawesome/free-solid-svg-icons';
 import AppContext from 'contexts/AppContext';
 
+/*
+ * ThemeSwitcher Component
+ * ===============
+ * - form to switch between themes
+ *
+ */
+const ThemeSwitcher = props => {
+  const value = useContext(AppContext);
+  return (
+    <Form>
+      <label>
+        <ThemeSwitcherIcon icon={faPalette} />
+        Theme:
+      </label>
+      <Select value={value.theme} onChange={value.switchTheme}>
+        <option value='moon'>Moon</option>
+        <option value='mars'>Mars</option>
+        <option value='asteroid'>Asteroid</option>
+        <option value='europa'>Europa</option>
+        <option value='jupiter'>Jupiter</option>
+        <option value='titan'>Titan</option>
+        <option value='neptune'>Neptune</option>
+        <option value='pluto'>Pluto</option>
+      </Select>
+    </Form>
+  );
+};
+
 const Form = styled.form`
   label {
     font-weight: bold;
+  }
+  display: flex;
+  align-items: center;
+
+  @media only screen and (max-width: 500px) {
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: flex-end;
+
+    label {
+      display: none;
+    }
   }
 `;
 
@@ -31,63 +71,5 @@ const Select = styled.select`
     cursor: pointer;
   }
 `;
-
-const ThemeSwitcher = props => {
-  const value = useContext(AppContext);
-  /*
-  const renderItem = (destination, index) => {
-    return (
-      <KitDropdownItem
-        onSelect={() => props.setDestinationIndex(index)}
-        key={index}
-      >
-        {destination.title}
-      </KitDropdownItem>
-    );
-  };*/
-
-  /*
-  const renderDestinationMenu = () => {
-    const { destinations, destinationIndex: current } = props;
-    return (
-      <KitDropdown
-        alignRight
-        label={destinations[current].title}
-        items={props.destinations.map((destination, index) =>
-          renderItem(destination, index)
-        )}
-      />
-    );
-  };*/
-
-  return (
-    <Form>
-      <label>
-        <ThemeSwitcherIcon icon={faPalette} />
-        Theme:
-      </label>
-      <Select value={value.theme} onChange={value.switchTheme}>
-        <option value='moon'>Moon</option>
-        <option value='mars'>Mars</option>
-        <option value='asteroid'>Asteroid</option>
-        <option value='europa'>Europa</option>
-        <option value='jupiter'>Jupiter</option>
-        <option value='titan'>Titan</option>
-        <option value='neptune'>Neptune</option>
-        <option value='pluto'>Pluto</option>
-      </Select>
-    </Form>
-  );
-  /*
-  return (
-    <Container onClick={props.toggleTheme}>
-      {props.isDarkTheme ? (
-        <FontAwesomeIcon icon={faSun} />
-      ) : (
-        <FontAwesomeIcon icon={faMoon} />
-      )}
-    </Container>
-  );*/
-};
 
 export default ThemeSwitcher;

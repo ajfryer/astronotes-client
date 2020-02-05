@@ -5,15 +5,23 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faFolderOpen,
   faFolder,
-  faFolderPlus
+  faFolderPlus,
+  faLevelUpAlt
 } from '@fortawesome/free-solid-svg-icons';
 import AppContext from 'contexts/AppContext';
 
 const Title = styled.h2`
+  margin: auto 0;
   text-align: left;
   svg {
     margin-right: 0.5rem;
   }
+`;
+
+const Header = styled.header`
+  display: flex;
+  width: 100%;
+  margin: 0.5rem 0;
 `;
 
 const FolderList = styled.ul`
@@ -37,16 +45,26 @@ const FolderList = styled.ul`
 `;
 
 const AddFolderLink = styled(NavLink)`
-  display: block;
   text-align: center;
-  width: 100%;
-  border-color: ${props => props.theme.color.foreground};
-  background-color: transparent;
-  border: 0.15rem dashed ${props => props.theme.color.foreground};
-  color: ${props => props.theme.color.foreground};
-  padding: 1rem 1rem;
+  padding: 0rem 0rem;
   font-weight: normal;
   text-decoration: none;
+  height: auto;
+  max-width: 125px;
+  margin-left: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  color: ${props => props.theme.color.background};
+  background-color: ${props => props.theme.color.accent1};
+  border-color: ${props => props.theme.color.accent2};
+  padding: 0.25rem 0.5rem;
+  background-image: linear-gradient(
+    to bottom,
+    #fff,
+    ${props => props.theme.color.accent1}
+  );
 
   svg {
     margin-right: 0.5rem;
@@ -65,10 +83,11 @@ const FolderNav = props => {
     return (
       <NavLink to={`/folder/${folder.id}`}>
         <h3>
+          <FontAwesomeIcon icon={faLevelUpAlt} className='fa-rotate-90' />
           {params.folderId === folder.id || !params.folderId ? (
-            <FontAwesomeIcon icon={faFolderOpen} />
+            <FontAwesomeIcon icon={faFolderOpen} className='fa-fw' />
           ) : (
-            <FontAwesomeIcon icon={faFolder} />
+            <FontAwesomeIcon icon={faFolder} className='fa-fw' />
           )}
           {folder.name}
         </h3>
@@ -77,21 +96,21 @@ const FolderNav = props => {
   };
   return (
     <>
-      <Title>
-        <FontAwesomeIcon icon={faFolderOpen} />
-        Folders
-      </Title>
-
+      <Header>
+        <Title>
+          <FontAwesomeIcon icon={faFolderOpen} />
+          Folders
+        </Title>
+        <AddFolderLink to={`/addfolder/`}>
+          <FontAwesomeIcon icon={faFolderPlus} />
+          <div>Add Folder</div>
+        </AddFolderLink>
+      </Header>
       <FolderList>
         {folders.map(folder => (
           <li key={folder.id}>{renderFolderLink(folder)}</li>
         ))}
       </FolderList>
-
-      <AddFolderLink to={`/addfolder/`}>
-        <FontAwesomeIcon icon={faFolderPlus} />
-        Add New Folder
-      </AddFolderLink>
     </>
   );
 };
