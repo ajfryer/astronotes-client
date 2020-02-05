@@ -3,7 +3,7 @@
  */
 
 // configuration
-import config from 'config/config';
+import config from 'configs/config';
 
 // API base url
 const baseUrl = config.API_BASE_URL;

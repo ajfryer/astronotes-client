@@ -18,7 +18,6 @@ export default createGlobalStyle`
   a:hover {
     text-decoration: underline;
   }
-
   h1,h2,h3,h4,h5,h6 {
     color: ${props => props.theme.color.foreground};
     font-weight: normal;

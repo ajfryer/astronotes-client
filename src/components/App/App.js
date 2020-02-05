@@ -1,18 +1,16 @@
 // core dependencies: react and styled components
 import React from 'react';
-import styled, { ThemeProvider } from 'styled-components';
+import styled from 'styled-components';
 // custom components
+import Theme from 'components/Common/Theme';
 import Header from 'components/Header/Header';
 import Nav from 'components/Nav/Nav';
 import Main from 'components/Main/Main';
 import Loader from 'components/Common/Loader';
-// global dynamic styles
-import themes from 'styles/themes';
-import GlobalStyles from 'styles/GlobalStyles';
 // react contexts
 import AppContext from 'contexts/AppContext';
 // json server api
-import jsonServerApi from 'api/jsonServerApi';
+import jsonServer from 'apis/jsonServer';
 
 /*
  * App Component
@@ -37,7 +35,7 @@ class App extends React.Component {
 
   async componentDidMount() {
     try {
-      const { notes, folders } = await jsonServerApi.getAll();
+      const { notes, folders } = await jsonServer.getAll();
       this.setState({ notes, folders, loaded: true }); // success
     } catch (error) {
       console.log(error); // failure
@@ -47,7 +45,7 @@ class App extends React.Component {
   addNote = async note => {
     // try/catch to add note to server and state
     try {
-      note = await jsonServerApi.addNote(note);
+      note = await jsonServer.addNote(note);
       this.setState(prevState => ({
         notes: [...prevState.notes, note]
       }));
@@ -59,7 +57,7 @@ class App extends React.Component {
   addFolder = async folderName => {
     // try/catch to add folder to server and state
     try {
-      const folder = await jsonServerApi.addFolder(folderName);
+      const folder = await jsonServer.addFolder(folderName);
       this.setState(prevState => ({
         folders: [...prevState.folders, folder]
       }));
@@ -71,7 +69,7 @@ class App extends React.Component {
   deleteNote = async noteId => {
     // try/catch to delete note from server and set
     try {
-      await jsonServerApi.deleteNote(noteId);
+      await jsonServer.deleteNote(noteId);
       this.setState(prevState => ({
         notes: prevState.notes.filter(note => note.id !== noteId)
       }));
@@ -86,20 +84,18 @@ class App extends React.Component {
   };
 
   render() {
+    const value = {
+      theme: this.state.theme,
+      switchTheme: this.switchTheme,
+      notes: this.state.notes,
+      folders: this.state.folders,
+      addNote: this.addNote,
+      deleteNote: this.deleteNote,
+      addFolder: this.addFolder
+    };
     return (
-      <AppContext.Provider
-        value={{
-          theme: this.state.theme,
-          switchTheme: this.switchTheme,
-          notes: this.state.notes,
-          folders: this.state.folders,
-          addNote: this.addNote,
-          deleteNote: this.deleteNote,
-          addFolder: this.addFolder
-        }}
-      >
-        <ThemeProvider theme={themes[this.state.theme]}>
-          <GlobalStyles />
+      <AppContext.Provider value={value}>
+        <Theme>
           <Grid>
             <Header />
             <Loader loaded={this.state.loaded}>
@@ -107,7 +103,7 @@ class App extends React.Component {
               <Main />
             </Loader>
           </Grid>
-        </ThemeProvider>
+        </Theme>
       </AppContext.Provider>
     );
   }
