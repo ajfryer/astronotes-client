@@ -14,7 +14,7 @@ React Note Taking client app. Connects to [noteful-json-server](https://github.c
 
 - [React](https://reactjs.org/)
 - [React-router](https://reacttraining.com/react-router/)
-- [Styled-components](https://maven.apache.org/)
+- [Styled-components](https://styled-components.com/)
 
 ## Get Started
 
