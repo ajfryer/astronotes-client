@@ -8,7 +8,7 @@ React Note Taking app. Connects to [noteful-json-server](https://github.com/toma
   - client: api functions
   - components: view classes and functions
   - context: shared data objects
-  - config: initialize parameters
+  - config: setup parameters
 
 ## Built With
 
