@@ -119,7 +119,6 @@ class AddNote extends React.Component {
     } = this.state;
     const folder_id = folders.filter(folder => folder.name === folderName)[0]
       .id;
-    console.log('folder_id', folder_id);
     const modified = new Date().toString();
     const { addNote } = this.context;
     addNote({ name, folder_id, content, modified });

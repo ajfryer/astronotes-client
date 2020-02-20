@@ -10,7 +10,6 @@ import Context from 'context/Context';
 import PropTypes from 'prop-types';
 
 const NoteCard = props => {
-  console.log(props);
   const history = useHistory();
   const params = useParams();
   const { deleteNote } = useContext(Context);

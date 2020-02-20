@@ -36,11 +36,6 @@ class App extends React.Component {
   async componentDidMount() {
     try {
       const { notes, folders } = await jsonServer.getAll();
-      console.log(
-        'first load of notes and folders from server',
-        notes,
-        folders
-      );
       this.setState({ notes, folders, loaded: true }); // success
     } catch (error) {
       console.log(error); // failure
@@ -51,7 +46,6 @@ class App extends React.Component {
     // try/catch to add note to server and state
     try {
       note = await jsonServer.addNote(note);
-      console.log(note);
       this.setState(prevState => ({
         notes: [...prevState.notes, note]
       }));
@@ -78,7 +72,6 @@ class App extends React.Component {
     // try/catch to add folder to server and state
     try {
       const folder = await jsonServer.addFolder(folderName);
-      console.log(folder);
       this.setState(prevState => ({
         folders: [...prevState.folders, folder]
       }));
