@@ -1,6 +1,6 @@
-# Noteful
+# astronotes-client
 
-React Note Taking client app. Connects to [noteful-json-server](https://github.com/tomatau/noteful-json-server).
+frontend for astronotes - notetaking for spaceheads. Connects to [astronotes-server](https://github.com/ajfryer/astronotes-server).
 
 ## Architecture
 
