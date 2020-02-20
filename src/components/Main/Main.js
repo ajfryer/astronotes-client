@@ -8,6 +8,7 @@ import NoteList from 'components/Main/NoteList';
 import AddFolder from 'components/Main/AddFolder';
 import Error404 from 'components/Common/Error404';
 import AddNote from 'components/Main/AddNote';
+import EditNote from 'components/Main/EditNote';
 import ErrorBoundary from 'components/Common/ErrorBoundary';
 
 /*
@@ -25,14 +26,17 @@ const Main = () => {
           <Route exact path={['/folder/:folderId', '/']}>
             <NoteList />
           </Route>
-          <Route path='/note/:noteId'>
+          <Route path="/note/:noteId">
             <NoteContent />
           </Route>
-          <Route path='/addfolder/'>
+          <Route path="/addfolder/">
             <AddFolder />
           </Route>
-          <Route path='/addnote/'>
+          <Route path="/addnote/">
             <AddNote />
+          </Route>
+          <Route path="/editnote/:note_id">
+            <EditNote />
           </Route>
           <Route>
             <Error404 />

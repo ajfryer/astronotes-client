@@ -36,6 +36,11 @@ class App extends React.Component {
   async componentDidMount() {
     try {
       const { notes, folders } = await jsonServer.getAll();
+      console.log(
+        'first load of notes and folders from server',
+        notes,
+        folders
+      );
       this.setState({ notes, folders, loaded: true }); // success
     } catch (error) {
       console.log(error); // failure
@@ -46,9 +51,24 @@ class App extends React.Component {
     // try/catch to add note to server and state
     try {
       note = await jsonServer.addNote(note);
+      console.log(note);
       this.setState(prevState => ({
         notes: [...prevState.notes, note]
       }));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  updateNote = async note => {
+    // try/catch to update note to server and state
+    try {
+      const updateRequest = await jsonServer.updateNote(note);
+      if (updateRequest === true) {
+        this.setState(prevState => ({
+          notes: [...prevState.notes.filter(n => n.id !== note.id), note]
+        }));
+      } else throw new Error(`Failed to modify note ${note.id}`);
     } catch (error) {
       console.log(error);
     }
@@ -58,6 +78,7 @@ class App extends React.Component {
     // try/catch to add folder to server and state
     try {
       const folder = await jsonServer.addFolder(folderName);
+      console.log(folder);
       this.setState(prevState => ({
         folders: [...prevState.folders, folder]
       }));
@@ -91,7 +112,8 @@ class App extends React.Component {
       folders: this.state.folders,
       addNote: this.addNote,
       deleteNote: this.deleteNote,
-      addFolder: this.addFolder
+      addFolder: this.addFolder,
+      updateNote: this.updateNote
     };
     return (
       <Context.Provider value={value}>

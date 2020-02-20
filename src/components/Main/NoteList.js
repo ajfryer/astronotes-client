@@ -82,8 +82,12 @@ const NoteList = props => {
   const params = useParams();
   const { notes } = useContext(Context);
   let renderNotes = notes;
-  if (params.folderId)
-    renderNotes = notes.filter(note => note.folderId === params.folderId);
+  if (params.folderId) {
+    renderNotes = notes.filter(
+      note => note.folder_id === Number(params.folderId)
+    );
+  }
+
   return (
     <Container>
       <Header>
@@ -93,11 +97,11 @@ const NoteList = props => {
         </Title>
         <AddNoteLink to={`/addnote`}>
           <AddNoteIcon>
-            <span className='fa-layers fa-fw'>
+            <span className="fa-layers fa-fw">
               <FontAwesomeIcon icon={faStickyNote} />
               <FontAwesomeIcon
                 icon={faPlus}
-                className='fa-inverse'
+                className="fa-inverse"
                 style={{ fontSize: '50%' }}
               />
             </span>

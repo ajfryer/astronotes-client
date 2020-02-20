@@ -34,8 +34,27 @@ const addNote = async note => {
   };
   const noteResponse = await fetch(`${baseUrl}/notes`, options);
   if (!noteResponse.ok) throw new Error(noteResponse.statusText);
-  note = await noteResponse.json();
-  return note;
+  const id = await noteResponse.json();
+  return { id: id, ...note };
+};
+
+// PATCH: /notes
+const updateNote = async note => {
+  const modifiedNote = Object.assign({}, note);
+  delete modifiedNote.id;
+  const options = {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(modifiedNote)
+  };
+  const noteResponse = await fetch(
+    `${baseUrl}/notes/${Number(note.id)}`,
+    options
+  );
+  if (!noteResponse.ok) throw new Error(noteResponse.statusText);
+  return true;
 };
 
 // POST: /folders
@@ -50,7 +69,7 @@ const addFolder = async folderName => {
   const folderResponse = await fetch(`${baseUrl}/folders`, options);
   if (!folderResponse.ok) throw new Error(folderResponse.statusText);
   const folder = await folderResponse.json();
-  return folder;
+  return { name: folderName, ...folder };
 };
 
 // DELETE: /notes/:noteId
@@ -65,4 +84,4 @@ const deleteNote = async noteId => {
   if (!response.ok) throw new Error(response.statusText);
 };
 
-export default { getAll, addNote, addFolder, deleteNote };
+export default { getAll, addNote, addFolder, deleteNote, updateNote };

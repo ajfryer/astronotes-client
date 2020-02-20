@@ -8,8 +8,11 @@ const NoteContentContainer = styled.div``;
 
 const NoteContent = props => {
   const params = useParams();
+  console.log(params, typeof params.noteId);
   const { notes } = useContext(Context);
-  const note = notes.find(note => note.id === params.noteId);
+  console.log(notes);
+  const note = notes.find(note => note.id === parseInt(params.noteId));
+  console.log(note);
   return (
     <NoteContentContainer>
       <NoteCard note={note} content={note.content} />

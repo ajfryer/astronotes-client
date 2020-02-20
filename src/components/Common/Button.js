@@ -1,9 +1,8 @@
 import styled from 'styled-components';
 
 const Button = styled.button`
-  width: auto;
+  min-width: 100px;
 
-  align-self: flex-end;
   border-radius: 0.25rem;
 
   border-style: solid;

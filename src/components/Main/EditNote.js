@@ -87,23 +87,25 @@ const AddNoteForm = styled.form`
   }
 `;
 
-class AddNote extends React.Component {
+class EditNote extends React.Component {
   static contextType = Context;
 
   constructor(props, context) {
     super(props, context);
-    const { folders } = context;
+    const { folders, notes } = context;
+    const note = notes.find(n => n.id === Number(props.match.params.note_id));
+    const folder = folders.find(f => f.id === note.folder_id);
     this.state = {
       name: {
-        value: '',
+        value: note.name,
         touched: false
       },
       content: {
-        value: '',
+        value: note.content,
         touched: false
       },
       folderName: {
-        value: folders[0].name,
+        value: folder.name,
         touched: false
       }
     };
@@ -119,10 +121,16 @@ class AddNote extends React.Component {
     } = this.state;
     const folder_id = folders.filter(folder => folder.name === folderName)[0]
       .id;
-    console.log('folder_id', folder_id);
+    const note_id = Number(this.props.match.params.note_id);
     const modified = new Date().toString();
-    const { addNote } = this.context;
-    addNote({ name, folder_id, content, modified });
+    const { updateNote } = this.context;
+    updateNote({
+      id: note_id,
+      name,
+      folder_id,
+      content,
+      modified
+    });
     this.props.history.push('/');
   };
 
@@ -157,16 +165,17 @@ class AddNote extends React.Component {
         <Header>
           <Title>
             <FontAwesomeIcon icon={faStickyNote} />
-            Add A New Note
+            Edit Your Note
           </Title>
         </Header>
         <AddNoteForm onSubmit={e => this.handleSubmit(e)}>
           <fieldset style={{ flex: 1 }}>
-            <label htmlFor="name">Name New Note:</label>
+            <label htmlFor="name">Name:</label>
             <input
               type="text"
               name="name"
               id="name"
+              value={this.state.name.value}
               required
               onChange={e => this.handleInputChange(e)}
             />
@@ -191,7 +200,7 @@ class AddNote extends React.Component {
             </button>
           </fieldset>
           <fieldset>
-            <label htmlFor="content">Add Note Content:</label>
+            <label htmlFor="content">Note Content:</label>
             <textarea
               name="content"
               id="content"
@@ -206,4 +215,4 @@ class AddNote extends React.Component {
   }
 }
 
-export default withRouter(AddNote);
+export default withRouter(EditNote);

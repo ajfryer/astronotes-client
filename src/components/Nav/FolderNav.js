@@ -83,11 +83,11 @@ const FolderNav = props => {
     return (
       <NavLink to={`/folder/${folder.id}`}>
         <h3>
-          <FontAwesomeIcon icon={faLevelUpAlt} className='fa-rotate-90' />
-          {params.folderId === folder.id || !params.folderId ? (
-            <FontAwesomeIcon icon={faFolderOpen} className='fa-fw' />
+          <FontAwesomeIcon icon={faLevelUpAlt} className="fa-rotate-90" />
+          {Number(params.folderId) === folder.id || !params.folderId ? (
+            <FontAwesomeIcon icon={faFolderOpen} className="fa-fw" />
           ) : (
-            <FontAwesomeIcon icon={faFolder} className='fa-fw' />
+            <FontAwesomeIcon icon={faFolder} className="fa-fw" />
           )}
           {folder.name}
         </h3>
